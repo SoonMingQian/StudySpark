@@ -13,7 +13,7 @@ async function generateFlashcards(pdfPath) {
         // Read the PDF file
         const pdfData = fs.readFileSync(pdfPath);
         const pdfText = await pdf(pdfData);
-        console.log(pdfText);
+        
         // Create a prompt for the AI model
         const prompt = `Create flashcards from the following PDF content:\n\n${pdfText.text}`;
 
@@ -32,8 +32,9 @@ async function generateFlashcards(pdfPath) {
         console.log('AI Response:', JSON.stringify(result, null, 2));
 
         // Check if the response contains the expected data
-        if (result && result.response && result.response.candidates && result.response.candidates.length > 0) {
-            const flashcards = result.response.candidates[0].content.parts[0].text;
+        if (result?.response?.candidates?.[0]?.content?.parts?.[0]?.text) {
+            const flashcardsText = result.response.candidates[0].content.parts[0].text;
+            const flashcards = parseFlashcards(flashcardsText);
             return flashcards;
         } else {
             throw new Error('Unexpected response structure');
@@ -42,6 +43,24 @@ async function generateFlashcards(pdfPath) {
         console.error('Error generating flashcards:', error);
         throw error;
     }
+}
+
+function parseFlashcards(text) {
+    const flashcards = [];
+    const flashcardPairs = text.split('\n\n\n');
+
+    // Remove array. as it's incorrect
+    flashcardPairs.forEach(pair => {
+        const [front, back] = pair.split('\n\n**Back:**');
+        if (front && back) {
+            flashcards.push({
+                front: front.replace('**Front:**', '').trim(),
+                back: back.trim()
+            });
+        }
+    });
+
+    return flashcards;
 }
 
 module.exports = {
