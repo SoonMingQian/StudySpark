@@ -21,7 +21,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
-
+                console.log("upload success")
                 onUploadSuccess(response.data);
             } catch (error) {
                 console.error('Failed to upload file', error);

@@ -6,7 +6,7 @@ const { generateFlashcards } = require('../services/aiService');
 const upload = multer({ dest: 'uploads/' });
 
 router.post('/generate', upload.single('pdf'), async (req, res) => {
-    try{
+    try {
         const pdfPath = req.file.path;
         const flashcards = await generateFlashcards(pdfPath);
         res.send(flashcards);
