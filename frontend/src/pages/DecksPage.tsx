@@ -10,13 +10,15 @@ const DecksPage: React.FC<DecksPageProps> = ({ decks }) => {
     return (
         <div>
             <h2>Your Decks</h2>
-            <Link to="/">Back to Home</Link>
+            {/* <Link to="/">Back to Home</Link> */}
             {decks.length === 0 ? (
                 <p>No decks available. Upload and save a deck!</p>
             ) : (
                 decks.map((deck, index) => (
                     <div key={index} className="deck">
-                        <h3>{deck.name}</h3>
+                        <h3>
+                            <Link to={`/quiz/${index}`}>{deck.name}</Link>
+                        </h3>
                         <p>{deck.flashcards.length} flashcards</p>
                     </div>
                 ))
