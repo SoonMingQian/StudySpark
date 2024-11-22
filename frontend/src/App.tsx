@@ -4,6 +4,7 @@ import './styles/CardHover.css'
 import FileUpload from './components/NoteUpload';
 import FlashcardList from './components/FlashCardList';
 import DecksPage from './pages/DecksPage';
+import QuizPage from './pages/QuizPage';
 import { Flashcard, Deck } from './type';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
@@ -67,7 +68,7 @@ function App() {
                   <FileUpload onUploadSuccess={handleUploadSuccess} />
                   {flashcards.length > 0 && (
                     <div>
-                      <FlashcardList flashcards={flashcards} />
+                      <FlashcardList flashcards={flashcards} setFlashcards={setFlashcards}/>
                       <button onClick={() => {
                         const deckName = prompt("Enter a name for this deck:");
                         if (deckName) saveDeck(deckName);
@@ -80,6 +81,7 @@ function App() {
               }
             />
             <Route path="/decks" element={<DecksPage decks={decks} />} />
+            <Route path="/quiz/:id" element={<QuizPage decks={decks} setDecks={setDecks} />} />
           </Routes>
         </header>
       </div>
