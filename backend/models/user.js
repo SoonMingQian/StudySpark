@@ -10,8 +10,12 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
-})
+    },
+    decks: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Deck'
+    }]
+});
 
 // If the password is not changed it will not be hashed again
 userSchema.pre('save', async function(next){

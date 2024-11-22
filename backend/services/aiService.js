@@ -2,9 +2,12 @@ const axios = require('axios');
 const fs = require('fs');
 const pdf = require('pdf-parse');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const Flashcard = require('../models/flashcard');
+const User = require('../models/user');
+const Deck = require('../models/deck');
 
 
-async function generateFlashcards(pdfPath) {
+async function generateFlashcards(pdfPath, userId, deckId) {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
     const model = genAI.getGenerativeModel({
         model: "gemini-1.5-flash",
@@ -36,6 +39,7 @@ async function generateFlashcards(pdfPath) {
             const flashcardsText = result.response.candidates[0].content.parts[0].text;
             const flashcards = parseFlashcards(flashcardsText);
             return flashcards;
+
         } else {
             throw new Error('Unexpected response structure');
         }
@@ -44,24 +48,6 @@ async function generateFlashcards(pdfPath) {
         throw error;
     }
 }
-
-// function parseFlashcards(text) {
-//     const flashcards = [];
-//     const flashcardPairs = text.split('\n\n\n');
-
-//     // Remove array. as it's incorrect
-//     flashcardPairs.forEach(pair => {
-//         const [front, back] = pair.split('\n\n**Back:**');
-//         if (front && back) {
-//             flashcards.push({
-//                 front: front.replace('**Front:**', '').trim(),
-//                 back: back.trim()
-//             });
-//         }
-//     });
-
-//     return flashcards;
-// }
 
 function parseFlashcards(text) {
     const flashcards = [];
