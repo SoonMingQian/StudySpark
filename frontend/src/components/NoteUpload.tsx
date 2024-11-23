@@ -18,7 +18,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
                 formData.append('pdf', file);
                 const response = await axios.post('http://localhost:4000/api/flashcards/generate', formData, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
                 })
                 console.log("upload success")

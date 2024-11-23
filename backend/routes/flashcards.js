@@ -69,4 +69,14 @@ router.get('/getflashcards', protect, async (req, res) => {
     }
 });
 
+router.get('/getdecks', protect, async (req, res) => {
+    try {
+        const decks = await Deck.find({ user: req.user._id }).populate('flashcards');
+        res.json(decks);
+    } catch (error) {
+        res.status(500).send('Error fetching decks');
+    }
+});
+
+
 module.exports = router;

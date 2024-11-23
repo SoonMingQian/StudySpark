@@ -10,7 +10,6 @@ const DecksPage: React.FC<DecksPageProps> = ({ decks }) => {
     return (
         <div>
             <h2>Your Decks</h2>
-            {/* <Link to="/">Back to Home</Link> */}
             {decks.length === 0 ? (
                 <p>No decks available. Upload and save a deck!</p>
             ) : (
