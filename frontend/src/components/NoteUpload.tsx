@@ -8,10 +8,12 @@ interface FileUploadProps {
 
 const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
     const [file, setFile] = useState<File | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (file) {
+            setLoading(true); // Start loading
             console.log('Uploading file...', file);
             try {
                 const formData = new FormData();
@@ -26,6 +28,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
                 onUploadSuccess(response.data);
             } catch (error) {
                 console.error('Failed to upload file', error);
+            } finally {
+                setLoading(false); // Stop loading
             }
         } else {
             console.error('No file selected');
@@ -40,7 +44,10 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
     return (
         <form onSubmit={handleSubmit}>
             <input type="file" accept=".pdf,image/*" onChange={handleFileChange} />
-            <button type="submit">Upload</button>
+            <button type="submit" disabled={loading}>
+                {loading ? 'Uploading...' : 'Upload'}
+            </button>
+            {loading && <p>Uploading your file, please wait...</p>}
         </form>
     )
 }

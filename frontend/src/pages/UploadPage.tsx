@@ -9,11 +9,12 @@ interface UploadPageProps {
     setFlashcards: React.Dispatch<React.SetStateAction<Flashcard[]>>;
     decks: Deck[];
     setDecks: React.Dispatch<React.SetStateAction<Deck[]>>;
+    fetchUserData: () => Promise<void>
 }
 
 
 
-const UploadPage: React.FC<UploadPageProps> = ({ flashcards, setFlashcards, decks, setDecks }) => {
+const UploadPage: React.FC<UploadPageProps> = ({ flashcards, setFlashcards, decks, setDecks, fetchUserData }) => {
     const handleUploadSuccess = (flashcards: Flashcard[]) => {
         setFlashcards(flashcards);
     };
@@ -32,6 +33,7 @@ const UploadPage: React.FC<UploadPageProps> = ({ flashcards, setFlashcards, deck
             if (response.ok) {
                 const newDeck = await response.json();
                 setDecks([...decks, newDeck]);
+                fetchUserData(); //refetch the userdata because new data has been added in save
                 setFlashcards([]); // Clear flashcards after saving
             } else {
                 console.error('Failed to save deck');

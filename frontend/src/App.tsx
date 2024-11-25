@@ -21,21 +21,22 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const response = await fetch('http://localhost:4000/api/flashcards/getdecks', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          const userDecks = await response.json();
-          setDecks(userDecks);
-        } catch (error) {
-          console.error('Failed to fetch user data:', error);
-        }
+  const fetchUserData = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const response = await fetch('http://localhost:4000/api/flashcards/getdecks', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const userDecks = await response.json();
+        setDecks(userDecks);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
       }
-    };
+    }
+  };
+
+  useEffect(() => { 
 
     if (isLoggedIn) {
       fetchUserData();
@@ -62,7 +63,7 @@ function App() {
           </nav>
           <Routes>
             <Route path="/" element={<ProtectedRoute>
-              <UploadPage flashcards={flashcards} setFlashcards={setFlashcards} decks={decks} setDecks={setDecks} />
+              <UploadPage flashcards={flashcards} setFlashcards={setFlashcards} decks={decks} setDecks={setDecks} fetchUserData={fetchUserData}/>
             </ProtectedRoute>              
               } />
             <Route path="/decks" element={<ProtectedRoute><DecksPage decks={decks} /></ProtectedRoute>} />
