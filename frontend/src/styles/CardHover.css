@@ -45,6 +45,7 @@
 .card__article {
     position: relative;
     overflow: hidden;
+    transition: transform 0.3s ease;
 }
 
 .card__front {
@@ -67,7 +68,7 @@
     right: 0;
     margin-inline: auto;
     opacity: 0;
-    transition: opacity 1s 1s;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .card__description {
@@ -88,60 +89,10 @@
 }
 
 .card__article:hover .card__data {
-    animation: show-data 1s forwards;
     opacity: 1;
-    transition: opacity .3s;
+    transform: translateY(-9rem);
 }
 
 .card__article:hover {
-    animation: remove-overflow 2s forwards;
-}
-
-.card__article:not(:hover) {
-    animation: show-overflow 2s forwards;
-}
-
-.card__article:not(:hover) .card__data {
-    animation: remove-data 1s forwards;
-}
-
-@keyframes show-data {
-    50% {
-        transform: translateY(-10rem);
-    }
-
-    100% {
-        transform: translateY(-9rem);
-    }
-}
-
-@keyframes remove-overflow {
-    to {
-        overflow: initial;
-    }
-}
-
-@keyframes remove-data {
-    0% {
-        transform: translateY(-7rem);
-    }
-
-    50% {
-        transform: translateY(-10rem);
-    }
-
-    100% {
-        transform: translateY(.5rem);
-    }
-}
-
-@keyframes show-overflow {
-    0% {
-        overflow: initial;
-        pointer-events: none;
-    }
-
-    50% {
-        overflow: hidden;
-    }
+    transform: scale(1.05);
 }

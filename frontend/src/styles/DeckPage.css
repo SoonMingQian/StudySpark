@@ -1,0 +1,14 @@
+.deck {
+  background-color: var(--secondary-bg);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}
+
+.deck h3 {
+  margin: 0;
+}
+
+.deck p {
+  color: var(--secondary-text);
+}

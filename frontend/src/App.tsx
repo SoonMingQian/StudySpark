@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './styles/App.css';
-import './styles/CardHover.css'
+// import './styles/CardHover.css'
+import './styles/FlashcardList.css'
+import './styles/QuizPage.css'
+import './styles/DeckPage.css'
+import './styles/FileUpload.css'
+import './styles/LoginPage.css'
 import ProtectedRoute from './components/ProtectedRoute';
 import DecksPage from './pages/DecksPage';
 import QuizPage from './pages/QuizPage';
