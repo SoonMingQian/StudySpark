@@ -50,12 +50,24 @@ const QuizPage: React.FC<QuizPageProps> = ({ decks, setDecks }) => {
     return (
         <div>
             <h2>{deck.name} Quiz</h2>
-            <div className="flashcard" onClick={handleFlip}>
-                {isFlipped ? deck.flashcards[currentCardIndex].back : deck.flashcards[currentCardIndex].front}
+            <div className="card__container quiz-card-container">
+                <div
+                    className={`card__article ${isFlipped ? 'is-flipped' : ''}`}
+                    onClick={handleFlip}
+                >
+                    <div className="card__front">
+                        {deck.flashcards[currentCardIndex].front}
+                    </div>
+                    <div className="card__back">
+                        {deck.flashcards[currentCardIndex].back}
+                    </div>
+                </div>
             </div>
-            <button onClick={handleBack}>Back</button>
-            <button onClick={handleNext}>Next</button>
-            <button onClick={handleEdit}>Edit</button>
+            <div className="controls">
+                <button onClick={handleBack}>Back</button>
+                <button onClick={handleNext}>Next</button>
+                <button onClick={handleEdit}>Edit</button>
+            </div>
         </div>
     );
 };

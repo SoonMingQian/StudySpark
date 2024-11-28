@@ -8,8 +8,10 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: var(--primary-text); /* Ensure text color is set */
-  min-height: 200px; /* Ensure a minimum height for the flashcard */
+  color: var(--primary-text);
+  /* Ensure text color is set */
+  min-height: 200px;
+  /* Ensure a minimum height for the flashcard */
 }
 
 .flashcard:hover {
@@ -17,19 +19,21 @@
 }
 
 button {
-  background-color: var(--accent-color);.quiz-container {
+  background-color: var(--accent-color);
+
+  .quiz-container {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
   }
-  
+
   .quiz-title {
     font-size: 2.5rem;
     color: var(--primary-text);
     margin-bottom: 2rem;
     text-align: center;
   }
-  
+
   .flashcard {
     background: var(--card-gradient);
     padding: 3rem;
@@ -48,20 +52,20 @@ button {
     margin: 2rem 0;
     position: relative;
   }
-  
+
   .flashcard:hover {
     transform: translateY(-2px);
     box-shadow: var(--hover-shadow);
     background: var(--card-hover);
   }
-  
+
   .controls {
     display: flex;
     justify-content: center;
     gap: 1rem;
     margin-top: 2rem;
   }
-  
+
   button {
     background: var(--button-gradient);
     color: white;
@@ -76,20 +80,20 @@ button {
     letter-spacing: 0.5px;
     box-shadow: var(--shadow);
   }
-  
+
   button:hover {
     background: var(--hover-gradient);
     box-shadow: var(--hover-shadow);
     transform: translateY(-1px);
   }
-  
+
   .progress {
     margin-top: 2rem;
     text-align: center;
     color: var(--secondary-text);
     font-size: 0.9rem;
   }
-  
+
   .edit-button {
     position: absolute;
     top: 1rem;
@@ -100,12 +104,13 @@ button {
     min-width: auto;
     padding: 0.5rem;
   }
-  
+
   .edit-button:hover {
     background: var(--card-hover);
     box-shadow: none;
     transform: none;
   }
+
   color: var(--primary-text);
   border: none;
   padding: 0.5rem 1rem;
@@ -117,4 +122,9 @@ button {
 
 button:hover {
   background-color: var(--hover-color);
+}
+
+.quiz-card-container {
+  width: 60%;
+  margin: 0 auto;
 }
