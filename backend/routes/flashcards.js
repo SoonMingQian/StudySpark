@@ -104,5 +104,29 @@ router.put('/updateflashcard/:id', protect, async (req, res) => {
     }
 })
 
+router.put('/updatedeck/:id', protect, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name } = req.body;
+
+        const deck = await Deck.findById(id);
+
+        if(!deck) {
+            return res.status(404).send('Deck not found');
+        }
+
+        if (deck.user.toString() !== req.user._id.toString()) {
+            return res.status(403).send('Unauthorized');
+        }
+
+        deck.name = name;
+
+        const updateDeck = await deck.save();
+        res.json(updateDeck);
+    } catch (error) {
+        res.status(500).send('Error updating deck');
+    }
+})
+
 
 module.exports = router;
