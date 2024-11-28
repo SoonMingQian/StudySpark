@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Deck } from '../type';
 
 interface QuizPageProps {
@@ -9,11 +9,15 @@ interface QuizPageProps {
 
 const QuizPage: React.FC<QuizPageProps> = ({ decks, setDecks }) => {
     const { id } = useParams<{ id: string }>();
-    const deckIndex = parseInt(id || '0');
-    const deck = decks[deckIndex];
+    const navigate = useNavigate();
+    const deck = decks.find((d) => d._id === id);  // Find by ID instead of index
 
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
+
+    if (!deck) {
+        return <p>Deck not found.</p>; // Handle missing deck scenario
+    }
 
     const handleFlip = () => {
         setIsFlipped(!isFlipped);
@@ -25,6 +29,7 @@ const QuizPage: React.FC<QuizPageProps> = ({ decks, setDecks }) => {
             prevIndex === deck.flashcards.length - 1 ? 0 : prevIndex + 1
         );
     };
+
     const handleBack = () => {
         setIsFlipped(false);
         setCurrentCardIndex((prevIndex) =>
@@ -32,24 +37,10 @@ const QuizPage: React.FC<QuizPageProps> = ({ decks, setDecks }) => {
         );
     };
 
-    const handleEdit = () => {
-        const currentCard = deck.flashcards[currentCardIndex];
-        const newFront = prompt("Edit Front Text:", currentCard.front);
-        const newBack = prompt("Edit Back Text:", currentCard.back);
-
-        if (newFront !== null && newBack !== null) {
-            const updatedDecks = [...decks];
-            updatedDecks[deckIndex].flashcards[currentCardIndex] = {
-                front: newFront,
-                back: newBack,
-            };
-            setDecks(updatedDecks);
-        }
-    };
-
     return (
         <div>
             <h2>{deck.name} Quiz</h2>
+            <button onClick={() => { navigate(`/browse/${id}`) }}>Go to Deck Browser</button>
             <div className="card__container quiz-card-container">
                 <div
                     className={`card__article ${isFlipped ? 'is-flipped' : ''}`}
@@ -66,7 +57,6 @@ const QuizPage: React.FC<QuizPageProps> = ({ decks, setDecks }) => {
             <div className="controls">
                 <button onClick={handleBack}>Back</button>
                 <button onClick={handleNext}>Next</button>
-                <button onClick={handleEdit}>Edit</button>
             </div>
         </div>
     );
