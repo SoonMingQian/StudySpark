@@ -61,7 +61,6 @@ const FlashcardList: React.FC<FlashCardListProps> = ({ flashcards, setFlashcards
 
   return (
     <div>
-      <h2>Generated Flashcards</h2>
       <div className="flashcard-grid">
         {flashcards.map((flashcard, index) => (
           <div key={index} className="card__container">

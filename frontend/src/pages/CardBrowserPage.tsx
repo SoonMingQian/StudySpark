@@ -86,9 +86,46 @@ const CardBrowserPage: React.FC<CardBrowserPageProps> = ({ decks, setDecks }) =>
         }
     };
 
+    const handleRenameDeck = async () => {
+        const newName = prompt('Enter the new deck name:', deck?.name);
+        if (newName && newName !== deck?.name) {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) throw new Error('User not authenticated.');
+
+                await axios.put(
+                    `http://localhost:4000/api/flashcards/updatedeck/${id}`,
+                    { name: newName, flashcards },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+
+                // Update the deck name locally
+                const updatedDecks = decks.map(d => d._id === id ? { ...d, name: newName } : d);
+                setDecks(updatedDecks);
+
+                alert('Deck name updated successfully!');
+            } catch (error) {
+                console.error('Error updating deck name:', error);
+                alert('Failed to update deck name.');
+            }
+        }
+    };
+
     return (
         <div>
-            <h2>Browsing Deck: {deck?.name || "Deck Not Found"}</h2>
+            <h2>Browsing Deck: {deck?.name || "Deck Not Found"}
+                <span
+                    style={{ cursor: 'pointer', color: 'blue', marginLeft: '10px' }}
+                    onClick={handleRenameDeck}
+                >
+                    Rename
+                </span>
+            </h2>
 
             <button onClick={() => setShowForm(!showForm)}>Add Flashcard</button>
             <button onClick={handleSaveChanges}>Save Changes</button>
