@@ -78,5 +78,31 @@ router.get('/getdecks', protect, async (req, res) => {
     }
 });
 
+router.put('/updateflashcard/:id', protect, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { front, back } = req.body;
+
+        const flashcard = await Flashcard.findById(id);
+
+        if(!flashcard) {
+            return res.status(404).send('Flashcard not found');
+        }
+
+        if (flashcard.user.toString() !== req.user._id.toString()) {
+            return res.status(403).send('Unauthorized');
+        }
+
+        flashcard.front = front;
+        flashcard.back = back;
+
+        const updatedFlashcard = await flashcard.save();
+        
+        res.json(updatedFlashcard);
+    } catch (error) {
+        res.status(500).send('Error updating flashcard');
+    }
+})
+
 
 module.exports = router;
