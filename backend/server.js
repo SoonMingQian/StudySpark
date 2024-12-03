@@ -4,9 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express()
 app.use(express.json())
-app.use(cors({
-    origin: 'https://witty-grass-0c7996403.4.azurestaticapps.net'  // Replace with your production frontend domain
-}));
+app.use(cors()); 
 const port = 4000
 
 const mongoURI = process.env.MONGO_URI;
