@@ -28,7 +28,7 @@ const CardBrowserPage: React.FC<CardBrowserPageProps> = ({ decks, setDecks }) =>
             if (!token) throw new Error('User not authenticated.');
 
             await axios.put(
-                `http://localhost:4000/api/flashcards/updatedeck/${id}`,
+                `${process.env.REACT_APP_API_URL}/api/flashcards/updatedeck/${id}`,
                 { name: deck?.name, flashcards: flashcards.map(({ _id, front, back }) => ({ _id, front, back })) },
                 {
                     headers: {
@@ -39,7 +39,7 @@ const CardBrowserPage: React.FC<CardBrowserPageProps> = ({ decks, setDecks }) =>
             );
             // Fetch the updated deck
             const { data } = await axios.get(
-                `http://localhost:4000/api/flashcards/getdecks`, {
+                `${process.env.REACT_APP_API_URL}/api/flashcards/getdecks`, {
                 headers: { Authorization: `Bearer ${token}` }
             }
             );
@@ -66,7 +66,7 @@ const CardBrowserPage: React.FC<CardBrowserPageProps> = ({ decks, setDecks }) =>
             if (!token) throw new Error('User not authenticated.');
 
             const { data: addedFlashcard } = await axios.post(
-                `http://localhost:4000/api/flashcards/addflashcard`,
+                `${process.env.REACT_APP_API_URL}/api/flashcards/addflashcard`,
                 { front: newFlashcard.front, back: newFlashcard.back, deckId: id },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -76,7 +76,7 @@ const CardBrowserPage: React.FC<CardBrowserPageProps> = ({ decks, setDecks }) =>
             setShowForm(false);
 
             // Refetch the deck data to sync
-            const { data: updatedDecks } = await axios.get(`http://localhost:4000/api/flashcards/getdecks`, {
+            const { data: updatedDecks } = await axios.get(`${process.env.REACT_APP_API_URL}/api/flashcards/getdecks`, {
                 headers: { Authorization: `Bearer ${token}` },
             }); 
             setDecks(updatedDecks);
@@ -94,7 +94,7 @@ const CardBrowserPage: React.FC<CardBrowserPageProps> = ({ decks, setDecks }) =>
                 if (!token) throw new Error('User not authenticated.');
 
                 await axios.put(
-                    `http://localhost:4000/api/flashcards/updatedeck/${id}`,
+                    `${process.env.REACT_APP_API_URL}/api/flashcards/updatedeck/${id}`,
                     { name: newName, flashcards },
                     {
                         headers: {

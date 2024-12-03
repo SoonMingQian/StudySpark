@@ -41,7 +41,7 @@ const FlashcardList: React.FC<FlashCardListProps> = ({ flashcards, setFlashcards
       if (!token) throw new Error('User not authenticated.');
 
       await axios.delete(
-        `http://localhost:4000/api/flashcards/deleteflashcard/${flashcardToDelete._id}`,
+        `${process.env.REACT_APP_API_URL}/api/flashcards/deleteflashcard/${flashcardToDelete._id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
