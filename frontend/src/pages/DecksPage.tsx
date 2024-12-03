@@ -16,9 +16,12 @@ const DecksPage: React.FC<DecksPageProps> = ({ decks }) => {
                 decks.map((deck, index) => (
                     <div key={index} className="deck">
                         <h3>
-                            <Link to={`/quiz/${index}`}>{deck.name}</Link>
+                            <Link to={`/quiz/${deck._id}`}>{deck.name}</Link>
                         </h3>
                         <p>{deck.flashcards.length} flashcards</p>
+                        <button>
+                            <Link to={`/browse/${deck._id}`}>Browse All Cards</Link>
+                        </button>
                     </div>
                 ))
             )}

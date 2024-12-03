@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Flashcard, Deck } from '../type';
 import FlashcardList from '../components/FlashCardList';
 import FileUpload from '../components/NoteUpload';
@@ -51,7 +50,7 @@ const UploadPage: React.FC<UploadPageProps> = ({ flashcards, setFlashcards, deck
             <FileUpload onUploadSuccess={handleUploadSuccess} />
             {flashcards.length > 0 && (
                 <div>
-                    <FlashcardList flashcards={flashcards} setFlashcards={setFlashcards} />
+                    <FlashcardList flashcards={flashcards} setFlashcards={setFlashcards} showDeleteButton={false} />
                     <button onClick={() => {
                         const deckName = prompt("Enter a name for this deck:");
                         if (deckName) saveDeck(deckName);

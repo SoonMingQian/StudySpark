@@ -14,6 +14,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import { Flashcard, Deck } from './type';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import CardBrowserPage from './pages/CardBrowserPage';
 
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
               } />
             <Route path="/decks" element={<ProtectedRoute><DecksPage decks={decks} /></ProtectedRoute>} />
             <Route path="/quiz/:id" element={<ProtectedRoute><QuizPage decks={decks} setDecks={setDecks} /></ProtectedRoute>} />
+            <Route path="/browse/:id" element={<ProtectedRoute><CardBrowserPage decks={decks} setDecks={setDecks} /></ProtectedRoute>}/>
             <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/register" element={<RegisterPage />} />
           </Routes>

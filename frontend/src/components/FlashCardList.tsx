@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import '../styles/FlashcardList.css';
 import { Flashcard } from '../type';
+import axios from 'axios';
 
 interface FlashCardListProps {
   flashcards: Flashcard[];
   setFlashcards: React.Dispatch<React.SetStateAction<Flashcard[]>>;
+  showDeleteButton?: boolean;
 }
 
-const FlashcardList: React.FC<FlashCardListProps> = ({ flashcards, setFlashcards }) => {
+const FlashcardList: React.FC<FlashCardListProps> = ({ flashcards, setFlashcards, showDeleteButton = true }) => {
   const [flippedCards, setFlippedCards] = useState<boolean[]>(new Array(flashcards.length).fill(false));
 
   const handleCardClick = (index: number) => {
@@ -31,9 +33,34 @@ const FlashcardList: React.FC<FlashCardListProps> = ({ flashcards, setFlashcards
     }
   };
 
+  const handleDeleteBtnClicked = async (index: number) => {
+    const flashcardToDelete = flashcards[index];
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('User not authenticated.');
+
+      await axios.delete(
+        `http://localhost:4000/api/flashcards/deleteflashcard/${flashcardToDelete._id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      // Remove the deleted flashcard from state
+      const updatedFlashcards = flashcards.filter((_, i) => i !== index);
+      setFlashcards(updatedFlashcards);
+
+      alert('Flashcard deleted successfully!');
+      window.location.reload(); 
+    } catch (error) {
+      console.error('Error deleting flashcard:', error);
+      alert('Failed to delete flashcard.');
+    }
+  };
+
   return (
     <div>
-      <h2>Generated Flashcards</h2>
       <div className="flashcard-grid">
         {flashcards.map((flashcard, index) => (
           <div key={index} className="card__container">
@@ -45,7 +72,12 @@ const FlashcardList: React.FC<FlashCardListProps> = ({ flashcards, setFlashcards
                 <p>{flashcard.back}</p>
               </div>
             </div>
-            <button className="card__button" onClick={(e) => { e.stopPropagation(); handleEditBtnClicked(index); }}>Edit</button>
+            <div>
+              <button className="card__button" onClick={(e) => { e.stopPropagation(); handleEditBtnClicked(index); }}>Edit</button>
+              {showDeleteButton && (
+                <button className="card__button" onClick={(e) => { e.stopPropagation(); handleDeleteBtnClicked(index); }}>Delete</button>
+              )}
+            </div>
           </div>
         ))}
       </div>

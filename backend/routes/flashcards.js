@@ -6,6 +6,7 @@ const Flashcard = require('../models/flashcard');
 const Deck = require('../models/deck');
 const User = require('../models/user');
 const router = express.Router();
+const mongoose = require('mongoose')
 
 const upload = multer({ dest: 'uploads/' });
 
@@ -85,7 +86,7 @@ router.put('/updateflashcard/:id', protect, async (req, res) => {
 
         const flashcard = await Flashcard.findById(id);
 
-        if(!flashcard) {
+        if (!flashcard) {
             return res.status(404).send('Flashcard not found');
         }
 
@@ -97,7 +98,7 @@ router.put('/updateflashcard/:id', protect, async (req, res) => {
         flashcard.back = back;
 
         const updatedFlashcard = await flashcard.save();
-        
+
         res.json(updatedFlashcard);
     } catch (error) {
         res.status(500).send('Error updating flashcard');
@@ -107,26 +108,99 @@ router.put('/updateflashcard/:id', protect, async (req, res) => {
 router.put('/updatedeck/:id', protect, async (req, res) => {
     try {
         const { id } = req.params;
-        const { name } = req.body;
+        const { name, flashcards } = req.body;
 
         const deck = await Deck.findById(id);
-
-        if(!deck) {
-            return res.status(404).send('Deck not found');
-        }
-
+        if (!deck) return res.status(404).send('Deck not found');
         if (deck.user.toString() !== req.user._id.toString()) {
             return res.status(403).send('Unauthorized');
         }
 
-        deck.name = name;
+        const savedFlashcards = [];
+        for (const f of flashcards) {
+            if (!f._id) {
+                // Create a new flashcard if no ID is present
+                const newFlashcard = new Flashcard({
+                    front: f.front,
+                    back: f.back,
+                    user: req.user._id,
+                    deck: id,
+                });
+                const saved = await newFlashcard.save();
+                savedFlashcards.push(saved._id);
+            } else {
+                savedFlashcards.push(f._id);
+            }
+        }
+        deck.name = name || deck.name;
+        deck.flashcards = savedFlashcards;
+        await deck.save();
 
-        const updateDeck = await deck.save();
-        res.json(updateDeck);
+        res.json(deck);
     } catch (error) {
+        console.error('Error updating deck:', error);
         res.status(500).send('Error updating deck');
     }
-})
+});
 
+router.post('/addflashcard', protect, async (req, res) => {
+    try {
+        const { front, back, deckId } = req.body;
+
+        const deck = await Deck.findById(deckId);
+        if (!deck) return res.status(404).send('Deck not found');
+        if (deck.user.toString() !== req.user._id.toString()) {
+            return res.status(403).send('Unauthorized');
+        }
+
+        // Create and save new flashcard
+        const newFlashcard = new Flashcard({
+            front,
+            back,
+            user: req.user._id,
+            deck: deckId,
+        });
+        const savedFlashcard = await newFlashcard.save();
+
+        // Add the flashcard to the deck
+        deck.flashcards.push(savedFlashcard._id);
+        await deck.save();
+
+        res.json(savedFlashcard);
+    } catch (error) {
+        console.error('Error adding flashcard:', error);
+        res.status(500).send('Error adding flashcard');
+    }
+});
+
+router.delete('/deleteflashcard/:id', protect, async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Find the flashcard and delete it
+        const flashcard = await Flashcard.findById(id);
+        if (!flashcard) return res.status(404).send('Flashcard not found');
+
+        // Ensure the flashcard belongs to the authenticated user
+        if (flashcard.user.toString() !== req.user._id.toString()) {
+            return res.status(403).send('Unauthorized');
+        }
+
+        // Remove the flashcard from the deck
+        const deck = await Deck.findById(flashcard.deck);
+        if (deck) {
+            deck.flashcards = deck.flashcards.filter(f => f.toString() !== id);
+            await deck.save();
+        }
+
+        // Delete the flashcard from the database
+        await Flashcard.findByIdAndDelete(id);
+
+        res.json({ message: 'Flashcard deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting flashcard:', error);
+        res.status(500).send('Error deleting flashcard');
+    }
+});
 
 module.exports = router;
