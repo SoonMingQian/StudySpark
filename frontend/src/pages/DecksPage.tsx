@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Flashcard , Deck} from '../type';
+import { Deck} from '../type';
 
 interface DecksPageProps {
     decks: Deck[];
