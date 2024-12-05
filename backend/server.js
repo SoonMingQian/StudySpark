@@ -9,7 +9,9 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
-const port = 4000
+
+// Use the port provided by Azure or default to 4000
+const port = process.env.PORT || 4000;
 
 const mongoURI = process.env.MONGO_URI;
 
@@ -20,14 +22,14 @@ async function main() {
     await mongoose.connect(mongoURI)
 }
 
-// Import flashcards routes
+// Import routes
 const auth = require('./routes/auth');
 const flashcards = require('./routes/flashcards');
 
-// Use flashcards routes
+// Use routes
 app.use('/api/auth', auth);
 app.use('/api/flashcards', flashcards);
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`Server running on port ${port}`);
 });
