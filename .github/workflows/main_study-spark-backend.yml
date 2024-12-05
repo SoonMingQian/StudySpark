@@ -60,3 +60,7 @@ jobs:
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E42B49EDA9CC479982FF9B6D4154CCDD }}
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
