@@ -11,7 +11,7 @@ const RegisterPage: React.FC = () => {
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            console.log(process.env.REACT_APP_API_URL);
+            console.log(`${process.env.REACT_APP_API_URL}/api/auth/register`);
             const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

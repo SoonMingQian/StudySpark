@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 const app = express()
 app.use(express.json())
 app.use(cors({
-    origin: 'https://witty-grass-0c7996403.4.azurestaticapps.net',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],  
-    credentials: true  
+    origin: true,  // Allow all origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 }));
 const port = 4000
 
