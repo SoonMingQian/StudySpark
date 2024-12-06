@@ -4,10 +4,26 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express()
 app.use(express.json())
+// Define allowed origins
+const allowedOrigins = [
+    'https://witty-grass-0c7996403.4.azurestaticapps.net',
+    'http://localhost:3000', // For local development
+];
+
+// CORS configuration
 app.use(cors({
-    origin: true,  // Allow all origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204
 }));
 
 // Use the port provided by Azure or default to 4000
