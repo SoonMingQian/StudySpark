@@ -12,6 +12,9 @@ router.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Handle preflight requests
+router.options('*', cors());
+
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: '30d'
@@ -64,7 +67,7 @@ router.post('/logout', (req, res) => {
         if (err) {
             return res.status(500).json({ message: 'Server error' });
         }
-        res.c
+        res.status(200).json({ message: 'Logged out successfully' });
     })
 })
 
