@@ -5,9 +5,10 @@ const mongoose = require('mongoose');
 const app = express()
 app.use(express.json())
 app.use(cors({
-    origin: true,  // Allow all origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    origin: 'https://witty-grass-0c7996403.4.azurestaticapps.net',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Use the port provided by Azure or default to 4000
@@ -26,6 +27,8 @@ async function main() {
 const auth = require('./routes/auth');
 const flashcards = require('./routes/flashcards');
 
+// Add before your routes
+app.options('*', cors()); // Enable pre-flight for all routes
 app.get('/api/debug', (req, res) => {
     res.json({
         environment: process.env.NODE_ENV,
