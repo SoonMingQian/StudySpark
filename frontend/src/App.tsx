@@ -31,7 +31,7 @@ function App() {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const response = await fetch('http://localhost:4000/api/flashcards/getdecks', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/flashcards/getdecks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const userDecks = await response.json();

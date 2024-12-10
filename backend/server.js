@@ -30,6 +30,14 @@ const flashcards = require('./routes/flashcards');
 app.use('/api/auth', auth);
 app.use('/api/flashcards', flashcards);
 
+// Add this after your current code
+app.on('error', (error) => {
+    console.error('Server error:', error);
+});
+
+// Modify the listen callback
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
+    console.log('Environment:', process.env.NODE_ENV);
+    console.log('MongoDB URI exists:', !!process.env.MONGO_URI);
 });
