@@ -33,7 +33,7 @@ async function main() {
 const auth = require('./routes/auth');
 const flashcards = require('./routes/flashcards');
 
-// Use routes
+// Use routes after middleware
 app.use('/api/auth', auth);
 app.use('/api/flashcards', flashcards);
 

@@ -3,8 +3,14 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const router = express.Router();
 const cors = require('cors');
-// Handle preflight requests
-router.options('*', cors());
+
+// Apply CORS middleware to this router
+router.use(cors({
+    origin: 'https://witty-grass-0c7996403.4.azurestaticapps.net',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
