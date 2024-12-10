@@ -7,7 +7,9 @@ const Deck = require('../models/deck');
 const User = require('../models/user');
 const router = express.Router();
 const mongoose = require('mongoose')
-
+const cors = require('cors');
+// Handle preflight requests
+router.options('*', cors());
 const upload = multer({ dest: 'uploads/' });
 
 router.post('/generate', protect, upload.single('pdf'), async (req, res) => {
