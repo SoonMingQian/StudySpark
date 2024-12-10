@@ -26,6 +26,15 @@ async function main() {
 const auth = require('./routes/auth');
 const flashcards = require('./routes/flashcards');
 
+app.get('/api/debug', (req, res) => {
+    res.json({
+        environment: process.env.NODE_ENV,
+        mongoURI: process.env.MONGO_URI ? 'Set' : 'Not Set',
+        port: process.env.PORT,
+        websitesPort: process.env.WEBSITES_PORT,
+    });
+});
+
 // Use routes
 app.use('/api/auth', auth);
 app.use('/api/flashcards', flashcards);
