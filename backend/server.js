@@ -8,7 +8,7 @@ const app = express();
 
 // Apply CORS middleware globally before defining routes
 app.use(cors({
-    origin: 'https://witty-grass-0c7996403.4.azurestaticapps.net',
+    origin: true, // Allow all origins
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
